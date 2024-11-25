@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import usePost from "../hooks/usePost";
-import PostTableRow from "./PostTableRow";
+// import PostTableRow from "./PostTableRow";
 
 function PostTableGrid() {
   const { data } = usePost();

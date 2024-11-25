@@ -8,12 +8,12 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import useUser from "../hooks/useUsers";
-import UserTableRow from "./UserTableRow";
+// import useUser from "../hooks/useUsers";
+// import UserTableRow from "./UserTableRow";
 import useUsers from "../hooks/useUsers";
 
 function UserTableGrid() {
-  const { data, error, isLoading } = useUsers();
+  const { data } = useUsers();
   return (
     <TableContainer>
       <Table variant="striped" size={"sm"}>

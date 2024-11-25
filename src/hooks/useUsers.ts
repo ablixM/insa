@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import user from "../data/user";
 import User from "../entities/user";
 import useUserQueryStore from "../store/useUserStore";
-import { APIClient, FetchResponse } from "../services/api-client";
-import ms from "ms";
-const apiClient = new APIClient<User>("/users");
+import { FetchResponse } from "../services/api-client";
+// import ms from "ms";
+// const apiClient = new APIClient<User>("/users");
 
 const useUsers = () => {
   const userQuery = useUserQueryStore((state) => state.userQuery);

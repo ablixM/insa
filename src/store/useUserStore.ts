@@ -12,14 +12,10 @@ interface UserQueryStore {
 }
 
 const useUserQueryStore = create<UserQueryStore>((set) => ({
-  userQuery: {
-    roleId: null, // Default role filter
-    searchText: "", // Default search text
-  },
+  userQuery: {},
   setRoleId: (roleId: number) =>
     set((store) => ({ userQuery: { ...store.userQuery, roleId } })),
-  setSearchText: (searchText) =>
-    set((state) => ({ userQuery: { ...state.userQuery, searchText } })),
+  setSearchText: (searchText) => set(() => ({ userQuery: { searchText } })),
 }));
 
 export default useUserQueryStore;

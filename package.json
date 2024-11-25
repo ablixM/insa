@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
-    "@hookform/resolvers": "^2.9.11",
+    "@hookform/resolvers": "^3.9.1",
     "@types/ms": "^0.7.34",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

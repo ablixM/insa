@@ -13,7 +13,6 @@ import {
   Image,
 } from "@chakra-ui/react";
 import insaLogo from "../assets/insaLogo.svg";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";

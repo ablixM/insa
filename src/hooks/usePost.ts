@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { Post } from "../entities/post";
+// import { Post } from "../entities/post";
 
-import { APIClient } from "../services/api-client";
-import ms from "ms";
+// import { APIClient } from "../services/api-client";
+// import ms from "ms";
 
 import postData from "../data/post";
 import usePostQueryStore from "../store/usePostStore";
-const apiClient = new APIClient<Post>("/users");
+// const apiClient = new APIClient<Post>("/users");
 
 const usePost = () => {
   const postQuery = usePostQueryStore((state) => state.postQuery);
