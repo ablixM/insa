@@ -20,6 +20,7 @@ import { BiHide, BiShow } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { users } from "../data/users";
 import { useUsersStore } from "../store/useUsersStore";
+import { useState } from "react";
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email address"),
