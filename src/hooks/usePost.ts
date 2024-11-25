@@ -28,7 +28,7 @@ const usePost = () => {
         }),
       };
     },
-    staleTime: ms("24h"),
+    staleTime: 0,
     initialData: postData,
   });
 };

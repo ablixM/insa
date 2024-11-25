@@ -15,7 +15,7 @@ import usePostQueryStore from "../store/usePostStore";
 function PostManagementToolBar() {
   const ref = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const setSearchText = usePostQueryStore((s) => s.setSearchText);
+  const { setSearchText } = usePostQueryStore();
   return (
     <>
       <HStack justify={"space-between"} marginTop={5}>
