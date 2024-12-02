@@ -1,13 +1,21 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, VStack } from "@chakra-ui/react";
 import Profile from "./Profile";
+import LogoutButton from "./LogoutButton";
 
 function NavBar() {
   return (
-    <HStack bg={"#1D2327"} height={"60px"} align={"center"}>
-      <Box position={"absolute"} right={8}>
+    <VStack bg={"#1D2327"} height={"60px"} align={"center"} justify={"center"}>
+      <Box
+        position={"absolute"}
+        right={8}
+        as={Flex}
+        flexDirection={"row"}
+        align={"center"}
+      >
         <Profile />
+        <LogoutButton />
       </Box>
-    </HStack>
+    </VStack>
   );
 }
 

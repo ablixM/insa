@@ -10,7 +10,6 @@ export const useRoles = () => {
   return useQuery({
     queryKey: ["roles"],
     queryFn: apiClient.getAll,
-    staleTime: 0,
     initialData: roles,
   });
 };

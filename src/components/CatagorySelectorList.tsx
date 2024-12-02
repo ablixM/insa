@@ -4,20 +4,24 @@ import usePostQueryStore from "../store/usePostStore";
 import useCatagory from "../hooks/useCatagory";
 
 function CatagorySelectorList() {
-  const seletedCatagoryId = usePostQueryStore((s) => s.postQuery.catagoryId);
-  const setSeletedCatagoryId = usePostQueryStore((s) => s.setCatagoryId);
+  const seletedCatagoryName = usePostQueryStore(
+    (s) => s.postQuery.catagoryName
+  );
+  const setSeletedCatagoryId = usePostQueryStore((s) => s.setCatagoryName);
   const { data } = useCatagory();
 
   return (
     <>
       <List marginTop={6}>
-        {data.results.map((catagory) => (
+        {data?.results.map((catagory) => (
           <ListItem
             size={"sm"}
             as={Button}
             key={catagory.id}
-            onClick={() => setSeletedCatagoryId(catagory.id)}
-            color={catagory.id === seletedCatagoryId ? "grey.800" : "blue.500"}
+            onClick={() => setSeletedCatagoryId(catagory.name)}
+            color={
+              catagory.name === seletedCatagoryName ? "grey.800" : "blue.500"
+            }
             cursor="pointer"
             variant={"link"}
             paddingX={4}

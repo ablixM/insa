@@ -1,10 +1,8 @@
-
 import useRoles from "./useRoles";
 
-
-const useRole= (id?: number) => {
-    const {data: roles} = useRoles();
-    return  roles?.results.find(p => p.id === id);
+const useRole = (role?: string) => {
+  const { data: roles } = useRoles();
+  return roles?.results.find((p) => p.name === role);
 };
 
 export default useRole;

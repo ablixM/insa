@@ -5,11 +5,13 @@ import useCatagories from "../hooks/useCatagories";
 import useCatagory from "../hooks/useCatagory";
 
 function CatagorySelector() {
-  const selectedCatagoryId = usePostQueryStore((s) => s.postQuery.catagoryId);
+  const selectedCatagoryName = usePostQueryStore(
+    (s) => s.postQuery.catagoryName
+  );
 
   const { data } = useCatagory();
-  const selectedCatagory = useCatagories(selectedCatagoryId);
-  const { setCatagoryId } = usePostQueryStore();
+  const selectedCatagory = useCatagories(selectedCatagoryName);
+  const { setCatagoryName } = usePostQueryStore();
   return (
     <Menu>
       <MenuButton
@@ -23,7 +25,7 @@ function CatagorySelector() {
       <MenuList overflowY={"auto"}>
         {data?.results.map((catagory) => (
           <MenuItem
-            onClick={() => setCatagoryId(catagory.id)}
+            onClick={() => setCatagoryName(catagory.name)}
             key={catagory.id}
           >
             {catagory.name}

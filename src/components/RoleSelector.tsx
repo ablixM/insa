@@ -5,8 +5,8 @@ import useRoles from "../hooks/useRoles";
 import useUserQueryStore from "../store/useUserStore";
 
 function RoleSelector() {
-  const selectedRoleId = useUserQueryStore((s) => s.userQuery.roleId);
-  const setSelectedRoleId = useUserQueryStore((s) => s.setRoleId);
+  const selectedRoleId = useUserQueryStore((s) => s.userQuery.role);
+  const setSelectedRole = useUserQueryStore((s) => s.setRole);
   const { data } = useRoles();
   const selectedRole = useRole(selectedRoleId);
   return (
@@ -21,7 +21,7 @@ function RoleSelector() {
       </MenuButton>
       <MenuList overflowY={"auto"}>
         {data?.results.map((role) => (
-          <MenuItem onClick={() => setSelectedRoleId(role.id)} key={role.id}>
+          <MenuItem onClick={() => setSelectedRole(role.name)} key={role.id}>
             {role.name}
           </MenuItem>
         ))}

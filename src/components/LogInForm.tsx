@@ -14,13 +14,13 @@ import {
 } from "@chakra-ui/react";
 import insaLogo from "../assets/insaLogo.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { BiHide, BiShow } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import { users } from "../data/users";
-import { useUsersStore } from "../store/useUsersStore";
+// import { useUsersStore } from "../store/useUsersStore";
 import { useState } from "react";
+import useLogin from "../hooks/useLogin";
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -35,9 +35,10 @@ type FormData = z.infer<typeof schema>;
 
 const LoginForm = () => {
   const [show, setShow] = useState(false);
-  const setUser = useUsersStore((state) => state.setUser);
+  // const setUser = useUsersStore((state) => state.setUser);
   const navigate = useNavigate();
   const handleClick = () => setShow(!show);
+  const loginMutation = useLogin();
   const {
     register,
     handleSubmit,
@@ -46,28 +47,20 @@ const LoginForm = () => {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: FieldValues) => {
-    const { email, password } = data;
-    console.log(data);
-    const user = users.find(
-      (u) =>
-        (u.username === email || u.email === email) && u.password === password
-    );
-
-    if (user) {
-      setUser({ username: user.username, email: user.email });
-      navigate("/dashboard"); // Redirect on successful login
-    } else {
-      alert("Invalid username/email or password"); // General error
+  const onSubmit = async (data: FormData) => {
+    console.log("data", data);
+    try {
+      const response = await loginMutation.mutateAsync(data);
+      if (response) {
+        localStorage.setItem("authToken", response.token);
+        console.log("Login successful:", response);
+        navigate("/");
+      } else {
+        console.error("Login failed:");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
     }
-    // loginClient
-    //     .post({ email: data.email, password: data.password })
-    //     .then((response) => {
-    //       console.log("Login successful:", response);
-    //     })
-    //     .catch((error) => {
-    //       console.error("Login failed:", error);
-    //     });
   };
   return (
     <Flex flexDirection={"column"}>
@@ -151,7 +144,7 @@ const LoginForm = () => {
                 paddingX={6}
                 borderRadius={4}
               >
-                Log In
+                {loginMutation.isPending ? " Logging in..." : "Login"}
               </Button>
             </HStack>
           </form>

@@ -35,9 +35,9 @@ function UserTableGrid() {
                 <Checkbox></Checkbox>
               </Td>
               <Td>{data.username}</Td>
-              <Td>{data.name}</Td>
+              <Td>{data.firstName + " " + data.lastName}</Td>
               <Td>{data.email}</Td>
-              <Td>{data.role.map((r) => r.name)}</Td>
+              <Td>{data.role}</Td>
             </Tr>
           ))}
         </Tbody>

@@ -1,20 +1,20 @@
 import { create } from "zustand";
 
 export interface UserQuery {
-  roleId?: number;
+  role?: string;
   searchText?: string;
 }
 
 interface UserQueryStore {
   userQuery: UserQuery;
-  setRoleId: (roleId: number) => void;
+  setRole: (role: string) => void;
   setSearchText: (searchText: string) => void;
 }
 
 const useUserQueryStore = create<UserQueryStore>((set) => ({
   userQuery: {},
-  setRoleId: (roleId: number) =>
-    set((store) => ({ userQuery: { ...store.userQuery, roleId } })),
+  setRole: (role: string) =>
+    set((store) => ({ userQuery: { ...store.userQuery, role } })),
   setSearchText: (searchText) => set(() => ({ userQuery: { searchText } })),
 }));
 

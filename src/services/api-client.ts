@@ -5,10 +5,7 @@ export interface FetchResponse<T> {
 }
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.rawg.io/api",
-  params: {
-    key: "13ad0271ce0d47a494bde4b33105d730",
-  },
+  baseURL: "http://192.168.100.147:5400",
 });
 
 export class APIClient<T> {
@@ -27,6 +24,22 @@ export class APIClient<T> {
   get = (id: number | string) => {
     return axiosInstance
       .get<T>(this.endpoint + "/" + id)
+      .then((res) => res.data);
+  };
+
+  create = (data: T) => {
+    return axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
+  };
+
+  login = (data: T) => {
+    return axiosInstance
+      .post<T>(`${this.endpoint}`, data)
+      .then((res) => res.data);
+  };
+
+  delete = (id: number | string) => {
+    return axiosInstance
+      .delete<T>(this.endpoint + "/" + id)
       .then((res) => res.data);
   };
 }
