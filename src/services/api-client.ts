@@ -5,7 +5,7 @@ export interface FetchResponse<T> {
 }
 
 const axiosInstance = axios.create({
-  baseURL: "http://192.168.100.147:5400",
+  baseURL: "http://localhost:5400",
 });
 
 export class APIClient<T> {
@@ -31,11 +31,9 @@ export class APIClient<T> {
     return axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
   };
 
-  login = (data: T) => {
-    return axiosInstance
-      .post<T>(`${this.endpoint}`, data)
-      .then((res) => res.data);
-  };
+  login<Req>(data: Req): Promise<T> {
+    return axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
+  }
 
   delete = (id: number | string) => {
     return axiosInstance

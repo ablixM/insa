@@ -14,7 +14,7 @@ const AuthContext = createContext<{
 // Provide the Auth Context
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    !!localStorage.getItem("authToken") // Check if token exists
+    !!localStorage.getItem("authToken")
   );
 
   const login = () => {

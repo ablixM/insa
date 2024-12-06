@@ -75,7 +75,7 @@ function NewPostForm() {
 
     try {
       const response = await axios.post(
-        "http://192.168.100.147:5400/posts",
+        "http://localhost:5400/posts",
         formData,
         {
           headers: {

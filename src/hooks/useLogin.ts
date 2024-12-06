@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { APIClient } from "../services/api-client";
-import UserLog from "../entities/userlog";
+import { LoginCredentials, UserLog } from "../entities/userlog";
 
 const apiClient = new APIClient<UserLog>("/login");
 
 const useLogin = () => {
   return useMutation({
-    mutationFn: (data: UserLog) => apiClient.login(data), // Explicitly wrap the login call
+    mutationFn: (data: LoginCredentials) => apiClient.login(data),
     onSuccess: (response) => {
       console.log("Login successful:", response);
     },
