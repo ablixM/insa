@@ -5,9 +5,7 @@ import useCatagories from "../hooks/useCatagories";
 import useCatagory from "../hooks/useCatagory";
 
 function CatagorySelector() {
-  const selectedCatagoryName = usePostQueryStore(
-    (s) => s.postQuery.catagoryName
-  );
+  const selectedCatagoryName = usePostQueryStore((s) => s.postQuery.categories);
 
   const { data } = useCatagory();
   const selectedCatagory = useCatagories(selectedCatagoryName);

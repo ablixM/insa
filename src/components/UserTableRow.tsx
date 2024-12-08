@@ -15,7 +15,7 @@ function UserTableRow({ data }: Props) {
       <Td>{data.username}</Td>
       <Td>{data.name}</Td>
       <Td>{data.email}</Td>
-      <Td>{data.role.map((r) => r.name)}</Td>
+      <Td>{data.role}</Td>
     </Tr>
   );
 }

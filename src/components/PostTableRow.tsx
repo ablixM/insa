@@ -14,7 +14,7 @@ function PostTableRow({ data }: Props) {
       </Td>
       <Td>{data.title}</Td>
       <Td>{data.authorName}</Td>
-      <Td>{data.catagory.map((s) => s.name)}</Td>
+      <Td>{data.categories}</Td>
       <Td>{data.createdAt}</Td>
       <Td>Action</Td>
     </Tr>

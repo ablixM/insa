@@ -3,11 +3,11 @@ import { PiLineVerticalBold } from "react-icons/pi";
 import usePostQueryStore from "../store/usePostStore";
 import useCatagory from "../hooks/useCatagory";
 
-function CatagorySelectorList() {
+const CatagorySelectorList = () => {
   const seletedCatagoryName = usePostQueryStore(
     (s) => s.postQuery.catagoryName
   );
-  const setSeletedCatagoryId = usePostQueryStore((s) => s.setCatagoryName);
+  const setSeletedCatagoryName = usePostQueryStore((s) => s.setCatagoryName);
   const { data } = useCatagory();
 
   return (
@@ -18,7 +18,7 @@ function CatagorySelectorList() {
             size={"sm"}
             as={Button}
             key={catagory.id}
-            onClick={() => setSeletedCatagoryId(catagory.name)}
+            onClick={() => setSeletedCatagoryName(catagory.name)}
             color={
               catagory.name === seletedCatagoryName ? "grey.800" : "blue.500"
             }
@@ -35,6 +35,6 @@ function CatagorySelectorList() {
       </List>
     </>
   );
-}
+};
 
 export default CatagorySelectorList;

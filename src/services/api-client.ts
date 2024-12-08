@@ -31,9 +31,11 @@ export class APIClient<T> {
     return axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
   };
 
-  login<Req>(data: Req): Promise<T> {
-    return axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
-  }
+  login = (data: T) => {
+    return axiosInstance
+      .post<T>(`${this.endpoint}`, data)
+      .then((res) => res.data);
+  };
 
   delete = (id: number | string) => {
     return axiosInstance
