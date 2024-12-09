@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 function LogoutButton() {
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
-  const cancelRef = React.useRef();
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
   const toast = useToast();
   const navigate = useNavigate();
 

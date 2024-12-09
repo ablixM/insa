@@ -1,16 +1,17 @@
 import {
   Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
   Input,
+  SimpleGrid,
+  FormHelperText,
+  FormErrorMessage,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
 import { useForm } from "react-hook-form";
@@ -97,106 +98,138 @@ function NewUserForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <VStack
-        flexDirection={"column"}
-        align={"center"}
-        justify={"center"}
-        maxW={"50%"}
-        spacing={4}
-      >
-        <FormControl isInvalid={!!errors.username}>
-          <Box as={Flex} flexDirection={"row"} align={"center"}>
-            <FormLabel width={"250px"} margin={0}>
-              User name
-            </FormLabel>
-            <Input {...register("username")} />
-          </Box>
-          <Box color="red.500">{errors.username?.message}</Box>
-        </FormControl>
+      <Box maxW="800px">
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+          <FormControl isInvalid={!!errors.username}>
+            <FormLabel>Username</FormLabel>
+            <Input
+              {...register("username")}
+              placeholder="Enter username"
+              borderRadius="md"
+              _focus={{
+                borderColor: "blue.400",
+                boxShadow: "0 0 0 1px blue.400",
+              }}
+              _hover={{
+                borderColor: "gray.300",
+              }}
+            />
+            <FormHelperText>Choose a unique username</FormHelperText>
+            <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
+          </FormControl>
 
-        <FormControl isInvalid={!!errors.email}>
-          <Box as={Flex} flexDirection={"row"} align={"center"}>
-            <FormLabel width={"250px"} margin={0}>
-              E-mail
-            </FormLabel>
-            <Input type="email" {...register("email")} />
-          </Box>
-          <Box color="red.500">{errors.email?.message}</Box>
-        </FormControl>
+          <FormControl isInvalid={!!errors.email}>
+            <FormLabel>Email</FormLabel>
+            <Input
+              {...register("email")}
+              type="email"
+              placeholder="Enter email"
+              borderRadius="md"
+              _focus={{
+                borderColor: "blue.400",
+                boxShadow: "0 0 0 1px blue.400",
+              }}
+            />
+            <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+          </FormControl>
 
-        <FormControl isInvalid={!!errors.firstName}>
-          <Box as={Flex} flexDirection={"row"} align={"center"}>
-            <FormLabel width={"250px"} margin={0}>
-              First Name
-            </FormLabel>
-            <Input {...register("firstName")} />
-          </Box>
-          <Box color="red.500">{errors.firstName?.message}</Box>
-        </FormControl>
+          <FormControl isInvalid={!!errors.firstName}>
+            <FormLabel>First Name</FormLabel>
+            <Input
+              {...register("firstName")}
+              placeholder="Enter first name"
+              borderRadius="md"
+              _focus={{
+                borderColor: "blue.400",
+                boxShadow: "0 0 0 1px blue.400",
+              }}
+            />
+            <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
+          </FormControl>
 
-        <FormControl isInvalid={!!errors.lastName}>
-          <Box as={Flex} flexDirection={"row"} align={"center"}>
-            <FormLabel width={"250px"} margin={0}>
-              Last Name
-            </FormLabel>
-            <Input {...register("lastName")} />
-          </Box>
-          <Box color="red.500">{errors.lastName?.message}</Box>
-        </FormControl>
+          <FormControl isInvalid={!!errors.lastName}>
+            <FormLabel>Last Name</FormLabel>
+            <Input
+              {...register("lastName")}
+              placeholder="Enter last name"
+              borderRadius="md"
+              _focus={{
+                borderColor: "blue.400",
+                boxShadow: "0 0 0 1px blue.400",
+              }}
+            />
+            <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
+          </FormControl>
 
-        <FormControl isInvalid={!!errors.password}>
-          <Box as={Flex} flexDirection={"row"} align={"center"}>
-            <FormLabel width={"250px"} margin={0}>
-              Password
-            </FormLabel>
-            <Input type="password" {...register("password")} />
-          </Box>
-          <Box color="red.500">{errors.password?.message}</Box>
-        </FormControl>
+          <FormControl isInvalid={!!errors.password}>
+            <FormLabel>Password</FormLabel>
+            <Input
+              {...register("password")}
+              type="password"
+              placeholder="••••••••"
+              borderRadius="md"
+              _focus={{
+                borderColor: "blue.400",
+                boxShadow: "0 0 0 1px blue.400",
+              }}
+            />
+            <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+          </FormControl>
 
-        <FormControl isInvalid={!!errors.confirmPassword}>
-          <Box as={Flex} flexDirection={"row"} align={"center"}>
-            <FormLabel width={"250px"} margin={0}>
-              Confirm Password
-            </FormLabel>
-            <Input type="password" {...register("confirmPassword")} />
-          </Box>
-          <Box color="red.500">{errors.confirmPassword?.message}</Box>
-        </FormControl>
+          <FormControl isInvalid={!!errors.confirmPassword}>
+            <FormLabel>Confirm Password</FormLabel>
+            <Input
+              {...register("confirmPassword")}
+              type="password"
+              placeholder="••••••••"
+              borderRadius="md"
+              _focus={{
+                borderColor: "blue.400",
+                boxShadow: "0 0 0 1px blue.400",
+              }}
+            />
+            <FormErrorMessage>
+              {errors.confirmPassword?.message}
+            </FormErrorMessage>
+          </FormControl>
 
-        <FormControl>
-          <Box as={Flex} flexDirection={"row"} align={"center"}>
-            <FormLabel width={"200px"} margin={0}>
-              Role
-            </FormLabel>
+          <FormControl>
+            <FormLabel>Role</FormLabel>
             <Menu>
               <MenuButton
                 as={Button}
                 rightIcon={<BsChevronDown />}
-                overflowY={"hidden"}
+                width="100%"
+                textAlign="left"
+                variant="outline"
               >
-                {selectedRole?.name || "Role"}
+                {selectedRole?.name || "Select Role"}
               </MenuButton>
-              <MenuList overflowY={"auto"}>
+              <MenuList>
                 {data?.results.map((role) => (
                   <MenuItem
-                    onClick={() => setSelectedRoleId(role.name)}
                     key={role.id}
+                    onClick={() => setSelectedRoleId(role.name)}
                   >
                     {role.name}
                   </MenuItem>
                 ))}
               </MenuList>
             </Menu>
-          </Box>
-        </FormControl>
+          </FormControl>
+        </SimpleGrid>
 
-        <Box marginY={12}>
-          <Button type={"submit"} bg={"green.400"} width={"200px"}>
-            Add User
-          </Button>
-        </Box>
-      </VStack>
+        <Button
+          type="submit"
+          colorScheme="blue"
+          size="md"
+          width="100%"
+          borderRadius="md"
+          mt={8}
+        >
+          Submit
+        </Button>
+      </Box>
     </form>
   );
 }

@@ -7,6 +7,7 @@ import router from "./routes";
 import { RouterProvider } from "react-router-dom";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(

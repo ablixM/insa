@@ -42,4 +42,9 @@ export class APIClient<T> {
       .delete<T>(this.endpoint + "/" + id)
       .then((res) => res.data);
   };
+  update = (id: number | string, data: Partial<T>) => {
+    return axiosInstance
+      .patch<T>(this.endpoint + "/" + id, data)
+      .then((res) => res.data);
+  };
 }

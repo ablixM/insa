@@ -1,6 +1,7 @@
-import { Box, CloseButton, Heading, SimpleGrid, Stack } from "@chakra-ui/react";
+import { Box, Button, Heading, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import NewUserForm from "../components/NewUserForm";
+import { BsArrowLeft } from "react-icons/bs";
 
 function AddUser() {
   const navigate = useNavigate();
@@ -12,8 +13,15 @@ function AddUser() {
           flexDirection={"row"}
           align={"center"}
           marginY={5}
+          spacing={4}
         >
-          <CloseButton onClick={() => navigate(-1)} />
+          <Button
+            leftIcon={<BsArrowLeft />}
+            variant="ghost"
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </Button>
           <Heading size={"lg"}>Add New User</Heading>
         </Stack>
         <NewUserForm />

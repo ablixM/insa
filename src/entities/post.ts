@@ -7,6 +7,7 @@ export interface Post {
   createdAt: string;
   updatedAt: string;
   published: boolean;
+  description: string;
   tags?: string[];
   likesCount: number;
   commentsCount: number;

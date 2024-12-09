@@ -15,7 +15,7 @@ const useUpdatePost = () => {
 
   return useMutation({
     mutationFn: ({ id, ...data }: { id: string } & UpdatePostData) =>
-      apiClient.update(id, data),
+      apiClient.update(id, data as Partial<Post>),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },

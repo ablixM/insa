@@ -37,6 +37,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import useDeletePost from "../hooks/useDeletePost";
 import { Post } from "../entities/post";
 import useUpdatePost from "../hooks/useUpdatePost";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 function PostTableGrid() {
   const { data, isLoading } = usePost();
@@ -54,6 +56,7 @@ function PostTableGrid() {
     title?: string;
     authorName?: string;
     categories?: string;
+    description?: string;
   }>({});
   const { mutate: updatePost } = useUpdatePost();
 
@@ -124,6 +127,7 @@ function PostTableGrid() {
       title: post.title,
       authorName: post.authorName,
       categories: post.categories,
+      description: post.description,
     });
     setIsEditModalOpen(true);
   };
@@ -155,6 +159,16 @@ function PostTableGrid() {
         },
       }
     );
+  };
+
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      ["clean"],
+    ],
   };
 
   return (
@@ -343,9 +357,13 @@ function PostTableGrid() {
         </AlertDialogOverlay>
       </AlertDialog>
 
-      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        size="xl"
+      >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent maxW="800px">
           <ModalHeader>Edit Post</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -382,8 +400,22 @@ function PostTableGrid() {
                 }
               />
             </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Description</FormLabel>
+              <ReactQuill
+                theme="snow"
+                value={editedValues.description}
+                onChange={(content) =>
+                  setEditedValues({ ...editedValues, description: content })
+                }
+                modules={modules}
+                style={{
+                  height: "200px",
+                  marginBottom: "50px",
+                }}
+              />
+            </FormControl>
           </ModalBody>
-
           <ModalFooter>
             <Button
               variant="ghost"

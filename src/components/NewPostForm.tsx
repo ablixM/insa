@@ -10,12 +10,12 @@ import {
   Input,
   VStack,
   Text,
-  Textarea,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
   useToast,
+  Progress,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
@@ -24,19 +24,21 @@ import usePostQueryStore from "../store/usePostStore";
 import useCatagory from "../hooks/useCatagory";
 import { BsChevronDown } from "react-icons/bs";
 import useCatagories from "../hooks/useCatagories";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import DOMPurify from "dompurify";
 
 function NewPostForm() {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const [name, setName] = useState<string>("");
   const [age, setAge] = useState<string>("");
-  const [uploadStatus, setUploadStatus] = useState<string>("");
-  const selectedCatagoryName = usePostQueryStore(
-    (s) => s.postQuery.catagoryName
-  );
+  const selectedCatagoryName = usePostQueryStore((s) => s.postQuery.categories);
   const { data } = useCatagory();
   const selectedCatagory = useCatagories(selectedCatagoryName);
   const { setCatagoryName } = usePostQueryStore();
   const toast = useToast();
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -48,42 +50,53 @@ function NewPostForm() {
     setName(event.target.value);
   };
 
-  const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setAge(event.target.value);
-  };
-
   const handleUpload = async () => {
     if (!selectedFiles) {
-      setUploadStatus("Please select files first.");
+      toast({
+        title: "Error",
+        description: "Please select files first.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     }
+
+    setIsUploading(true);
+    setUploadProgress(0);
 
     const formData = new FormData();
     for (let i = 0; i < selectedFiles.length; i++) {
       formData.append("images", selectedFiles[i]);
     }
     formData.append("title", name);
-    formData.append("description", age);
+    const cleanContent = DOMPurify.sanitize(age, { ALLOWED_TAGS: [] });
+    formData.append("description", cleanContent);
     if (selectedCatagoryName) {
       formData.append("categories", selectedCatagoryName.toString());
     } else {
-      setUploadStatus("Please select a category.");
+      toast({
+        title: "Error",
+        description: "Please select a category.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5400/posts",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      setUploadStatus(response.data.message);
+      await axios.post("http://localhost:5400/posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const progress =
+            (progressEvent.loaded / (progressEvent.total || 1)) * 100;
+          setUploadProgress(Math.round(progress));
+        },
+      });
+
       toast({
         title: "Success",
         description: "Post added successfully.",
@@ -91,10 +104,41 @@ function NewPostForm() {
         duration: 3000,
         isClosable: true,
       });
+
+      // Reset form
+      setName("");
+      setAge("");
+      setSelectedFiles(null);
     } catch (error) {
-      setUploadStatus("Error uploading files.");
-      console.error("Error uploading files:", error);
+      toast({
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "Failed to upload post",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsUploading(false);
     }
+  };
+
+  // Helper function to get file names
+  const getSelectedFileNames = () => {
+    if (!selectedFiles) return "";
+    return Array.from(selectedFiles)
+      .map((file) => file.name)
+      .join(", ");
+  };
+
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      ["clean"],
+    ],
   };
 
   return (
@@ -125,7 +169,7 @@ function NewPostForm() {
           </Box>
           <Box marginY={4}>
             <FormControl>
-              <Flex alignItems="center">
+              <Flex alignItems="center" gap={4}>
                 <Button as="label" bg="blue.400" color="white" cursor="pointer">
                   Add Media
                   <Input
@@ -136,22 +180,35 @@ function NewPostForm() {
                     onChange={handleFileChange}
                   />
                 </Button>
-                <Box marginLeft={4} color="gray.600">
-                  <Text color="green.500" fontWeight="bold">
-                    file
-                  </Text>
+                <Box color="gray.600">
+                  {selectedFiles ? (
+                    <Text
+                      color="green.500"
+                      fontWeight="bold"
+                      isTruncated
+                      maxW="300px"
+                    >
+                      {getSelectedFileNames()}
+                    </Text>
+                  ) : (
+                    <Text color="gray.400">No files selected</Text>
+                  )}
                 </Box>
               </Flex>
             </FormControl>
           </Box>
 
           <FormControl>
-            <Textarea
-              placeholder="Description"
+            <ReactQuill
+              theme="snow"
               value={age}
-              onChange={handleDescriptionChange}
+              onChange={setAge}
+              modules={modules}
+              style={{
+                height: "200px",
+                marginBottom: "50px",
+              }}
             />
-            <Box color="red.500"></Box>
           </FormControl>
           <Box marginY={4}>
             <Menu>
@@ -202,7 +259,12 @@ function NewPostForm() {
                 <Button size={"sm"} variant={"link"}>
                   move to trash
                 </Button>
-                <Button onClick={handleUpload} size={"sm"}>
+                <Button
+                  onClick={handleUpload}
+                  size={"sm"}
+                  isLoading={isUploading}
+                  loadingText="Publishing..."
+                >
                   Publish
                 </Button>
               </HStack>
@@ -210,6 +272,18 @@ function NewPostForm() {
           </Box>
         </GridItem>
       </Grid>
+
+      {isUploading && (
+        <Box position="fixed" top="0" left="0" right="0" zIndex="toast">
+          <Progress
+            value={uploadProgress}
+            size="xs"
+            colorScheme="blue"
+            isAnimated
+            hasStripe
+          />
+        </Box>
+      )}
     </form>
   );
 }
